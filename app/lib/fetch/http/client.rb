@@ -19,7 +19,7 @@ module Fetch
         request = Net::HTTP::Post.new(uri.request_uri)
         request['Content-Type'] = 'application/json'
         request['Accept'] = 'application/json'
-        request.body = JSON.generate(payload) if payload
+        request.body = JSON.generate(payload.compact) if payload
 
         client.request(request)
       end
@@ -39,7 +39,7 @@ module Fetch
       def set_query_params(params)
         return unless params
 
-        uri.query = URI.encode_www_form(params)
+        uri.query = URI.encode_www_form(params.compact)
       end
     end
   end

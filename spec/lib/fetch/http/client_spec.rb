@@ -10,7 +10,7 @@ RSpec.describe Fetch::HTTP::Client do
           :get, "#{uri}?language=javascript"
         ).to_return(status: 200, body: '')
 
-        response = subject.get(language: 'javascript')
+        response = subject.get(language: 'javascript', nil: nil)
 
         expect(response).to be_kind_of(Net::HTTPOK)
       end
@@ -29,13 +29,12 @@ RSpec.describe Fetch::HTTP::Client do
 
   describe '#post' do
     context 'successful response' do
-      let(:request_params) {{ foo: 'bar' }}
-      let(:request_body) { JSON.generate(request_params) }
+      let(:request_body) { JSON.generate({ foo: 'bar' }) }
 
       it 'should make request and return response' do
         stub_request(:post, uri).with(body: request_body).to_return(status: 200)
 
-        response = subject.post(request_params)
+        response = subject.post({ foo: 'bar', nil: nil })
 
         expect(response).to be_kind_of(Net::HTTPOK)
       end
