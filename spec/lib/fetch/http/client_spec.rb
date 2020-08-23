@@ -5,24 +5,25 @@ RSpec.describe Fetch::HTTP::Client do
 
   describe '#get' do
     context 'successful response' do
-      it 'should make request and return response object' do
+      it 'returns parsed body' do
         stub_request(
           :get, "#{uri}?language=javascript"
-        ).to_return(status: 200, body: '')
+        ).to_return(status: 200, body: '[]')
 
-        response = subject.get(language: 'javascript', nil: nil)
+        result = subject.get(language: 'javascript', nil: nil)
 
-        expect(response).to be_kind_of(Net::HTTPOK)
+        expect(result).to be_kind_of(Array)
+        expect(result).to be_empty
       end
     end
 
     context 'unsuccessful request' do
-      it 'should make request and return response object' do
+      it 'raise error' do
         stub_request(:get, uri).to_return(status: 404, body: '')
 
-        response = subject.get()
-
-        expect(response).to be_kind_of(Net::HTTPNotFound)
+        expect do
+          subject.get()
+        end.to raise_error(Fetch::HTTP::Client::RequestError)
       end
     end
   end
@@ -31,12 +32,15 @@ RSpec.describe Fetch::HTTP::Client do
     context 'successful response' do
       let(:request_body) { JSON.generate({ foo: 'bar' }) }
 
-      it 'should make request and return response' do
-        stub_request(:post, uri).with(body: request_body).to_return(status: 200)
+      it 'return parsed body' do
+        stub_request(:post, uri)
+          .with(body: request_body)
+          .to_return(body: '{}', status: 200)
 
-        response = subject.post({ foo: 'bar', nil: nil })
+        result = subject.post({ foo: 'bar', nil: nil })
 
-        expect(response).to be_kind_of(Net::HTTPOK)
+        expect(result).to be_kind_of(Hash)
+        expect(result).to be_empty
       end
     end
   end
