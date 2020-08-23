@@ -1,7 +1,3 @@
-def app
-  Application
-end
-
 RSpec.describe Application do
   describe 'GET /' do
     it 'returns JSON response with available endpoints' do

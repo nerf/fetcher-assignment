@@ -31,3 +31,7 @@ RSpec.configure do |config|
   # Support
   config.include ResponseAsObject
 end
+
+def app
+  Application
+end
