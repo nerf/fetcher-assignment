@@ -15,6 +15,16 @@ RSpec.describe Fetch::HTTP::Client do
         expect(result).to be_kind_of(Array)
         expect(result).to be_empty
       end
+
+      it 'can make changes to request object by passing a block' do
+        stub_request(:get, uri)
+          .with(headers: { 'DUMMY' => 'HEADER' })
+          .to_return(body: '[]')
+
+        subject.get do |req|
+          req['DUMMY'] = 'HEADER'
+        end
+      end
     end
 
     context 'unsuccessful request' do
@@ -61,6 +71,16 @@ RSpec.describe Fetch::HTTP::Client do
 
         expect(result).to be_kind_of(Hash)
         expect(result).to be_empty
+      end
+
+      it 'can make changes to request object by passing a block' do
+        stub_request(:post, uri)
+          .with(headers: { 'DUMMY' => 'HEADER' })
+          .to_return(body: '[]')
+
+        subject.post do |req|
+          req['DUMMY'] = 'HEADER'
+        end
       end
     end
 

@@ -16,6 +16,8 @@ module Fetch
         request = ::Net::HTTP::Get.new(uri.request_uri)
         request['Accept'] = 'application/json'
 
+        yield request if block_given?
+
         parse_response! client.request(request)
       rescue Errno::ECONNREFUSED, Net::ReadTimeout, Net::OpenTimeout
         raise RequestError, "GET request to `#{uri.host}` timed out."
@@ -26,6 +28,9 @@ module Fetch
         request['Content-Type'] = 'application/json'
         request['Accept'] = 'application/json'
         request.body = JSON.generate(payload.compact) if payload
+
+        yield request if block_given?
+
         parse_response! client.request(request)
       rescue Errno::ECONNREFUSED, Net::ReadTimeout, Net::OpenTimeout
         raise RequestError, "POST request to `#{uri.host}` timed out."
