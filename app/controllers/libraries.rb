@@ -3,10 +3,12 @@ class Libraries < Sinatra::Base
     lang = params[:language]
 
     results = LibrariesFetcher
-                .call(using: %i(gitlab github), filters: { language: lang })
+                .call(using: [Fetch::Gitlab], lang: lang)
                 .sort_by(:updated_at)
-                .as_json(only: %i(url owner name description host))
+                .as_json(only: %i(url username name description source))
 
     { data: results }.to_json
+  rescue Fetch::HTTP::Client::RequestError => e
+    { error: true, message: e.message }.to_json
   end
 end
