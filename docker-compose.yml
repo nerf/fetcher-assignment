@@ -4,5 +4,7 @@ services:
     build: .
     ports:
       - "9292:9292"
+    environment:
+      - GITHUB_OAUTH_TOKEN
   memcached:
     image: "memcached:alpine"
