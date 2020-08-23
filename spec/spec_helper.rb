@@ -27,4 +27,7 @@ RSpec.configure do |config|
 
   # Rack Test
   config.include Rack::Test::Methods
+
+  # Support
+  config.include ResponseAsObject
 end
