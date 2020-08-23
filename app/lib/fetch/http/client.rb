@@ -17,6 +17,8 @@ module Fetch
         request['Accept'] = 'application/json'
 
         parse_response! client.request(request)
+      rescue Errno::ECONNREFUSED, Net::ReadTimeout, Net::OpenTimeout
+        raise RequestError, "GET request to `#{uri.host}` timed out."
       end
 
       def post(payload = nil)
@@ -25,6 +27,8 @@ module Fetch
         request['Accept'] = 'application/json'
         request.body = JSON.generate(payload.compact) if payload
         parse_response! client.request(request)
+      rescue Errno::ECONNREFUSED, Net::ReadTimeout, Net::OpenTimeout
+        raise RequestError, "POST request to `#{uri.host}` timed out."
       end
 
       private
@@ -51,8 +55,10 @@ module Fetch
           JSON.parse(response.body)
         else
           raise RequestError, "Request to `#{uri.host}` has failed with " \
-            + "status code `#{response.code}` `#{response.message}`"
+            + "status code `#{response.code}` `#{response.message}`."
         end
+      rescue JSON::ParserError
+        raise RequestError, "Request to `#{uri.host}` returned invalid data."
       end
     end
   end

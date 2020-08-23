@@ -26,6 +26,26 @@ RSpec.describe Fetch::HTTP::Client do
         end.to raise_error(Fetch::HTTP::Client::RequestError)
       end
     end
+
+    context 'timeouts' do
+      it 'raise error' do
+        stub_request(:get, uri).to_timeout
+
+        expect do
+          subject.get
+        end.to raise_error(Fetch::HTTP::Client::RequestError)
+      end
+    end
+
+    context 'malformed response' do
+      it 'raise error' do
+        stub_request(:get, uri).to_return(body: 'invalid-data')
+
+        expect do
+          subject.get
+        end.to raise_error(Fetch::HTTP::Client::RequestError)
+      end
+    end
   end
 
   describe '#post' do
@@ -41,6 +61,16 @@ RSpec.describe Fetch::HTTP::Client do
 
         expect(result).to be_kind_of(Hash)
         expect(result).to be_empty
+      end
+    end
+
+    context 'timeouts' do
+      it 'raise error' do
+        stub_request(:post, uri).to_timeout
+
+        expect do
+          subject.post
+        end.to raise_error(Fetch::HTTP::Client::RequestError)
       end
     end
   end
