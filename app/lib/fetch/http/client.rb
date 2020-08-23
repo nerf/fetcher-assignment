@@ -15,6 +15,15 @@ module Fetch
         client.request(request)
       end
 
+      def post(payload = nil)
+        request = Net::HTTP::Post.new(uri.request_uri)
+        request['Content-Type'] = 'application/json'
+        request['Accept'] = 'application/json'
+        request.body = JSON.generate(payload) if payload
+
+        client.request(request)
+      end
+
       private
 
       attr_reader :uri

@@ -26,4 +26,19 @@ RSpec.describe Fetch::HTTP::Client do
       end
     end
   end
+
+  describe '#post' do
+    context 'successful response' do
+      let(:request_params) {{ foo: 'bar' }}
+      let(:request_body) { JSON.generate(request_params) }
+
+      it 'should make request and return response' do
+        stub_request(:post, uri).with(body: request_body).to_return(status: 200)
+
+        response = subject.post(request_params)
+
+        expect(response).to be_kind_of(Net::HTTPOK)
+      end
+    end
+  end
 end
