@@ -1,9 +1,9 @@
 RSpec.describe Libraries do
   describe 'GET /libraries' do
-    let(:default_url) { 'https://gitlab.com/api/v4/projects?order_by=updated_at&per_page=50' }
+    let(:gitlab_url) { 'https://gitlab.com/api/v4/projects?order_by=updated_at&per_page=50' }
 
     context 'succeeds' do
-      let(:default_url) { 'https://gitlab.com/api/v4/projects?order_by=updated_at&per_page=50&with_programming_language=ruby' }
+      let(:gitlab_url) { 'https://gitlab.com/api/v4/projects?order_by=updated_at&per_page=50&with_programming_language=ruby' }
       let(:gitlab_results) do
         [
           {
@@ -16,9 +16,21 @@ RSpec.describe Libraries do
           }
         ].to_json
       end
+      let(:github_result) do
+        { 
+          data: {
+            search: {
+              edges: []
+            }
+          }
+        }.to_json
+      end
 
       before do
-        stub_request(:get, default_url).to_return(status: 200, body: gitlab_results)
+        stub_request(:get, gitlab_url)
+          .to_return(status: 200, body: gitlab_results)
+        stub_request(:post, Fetch::Github::API_ENDPOINT)
+          .to_return(status: 200, body: github_result)
 
         get '/libraries', language: 'ruby'
       end
@@ -37,7 +49,7 @@ RSpec.describe Libraries do
 
     context 'timeouts' do
       before do
-        stub_request(:get, default_url).to_timeout
+        stub_request(:get, gitlab_url).to_timeout
 
         get '/libraries'
       end
@@ -50,7 +62,7 @@ RSpec.describe Libraries do
 
     context 'malformed response' do
       before do
-        stub_request(:get, default_url).to_return(body: 'invalid-response')
+        stub_request(:get, gitlab_url).to_return(body: 'invalid-response')
 
         get '/libraries'
       end
