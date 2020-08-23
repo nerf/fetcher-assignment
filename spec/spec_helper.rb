@@ -1,7 +1,11 @@
 ENV['RACK_ENV'] ||= 'test'
 
+require 'webmock/rspec'
+
 require './config/boot'
 require './spec/support/response_as_object'
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
