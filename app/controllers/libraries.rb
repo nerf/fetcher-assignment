@@ -1,4 +1,8 @@
 class Libraries < Sinatra::Base
+  before do
+    cache_control :public, max_age: 60
+  end
+
   get '/libraries' do
     lang = params[:language]
 
