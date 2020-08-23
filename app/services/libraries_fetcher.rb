@@ -1,15 +1,29 @@
 class LibrariesFetcher
   class Results
-    def sort_by(atr)
-      self
-    end
+    attr_reader :results
 
-    def as_json(args)
-      []
+    def initialize
+      @results = []
     end
 
     def <<(list)
+      return unless list
+
+      @results = results.concat(list.compact)
+
+      self
     end
+
+    def sort_by(atr)
+      @results = results.sort_by { |r| r.public_send(atr) }
+
+      self
+    end
+
+    def as_json(args = {})
+      results.map { |r| r.as_json(args) }
+    end
+
   end
 
   def self.call(using: [], lang: nil)
