@@ -1,6 +1,8 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
 
+require './app/controllers/libraries'
+
 class Application < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
@@ -9,6 +11,8 @@ class Application < Sinatra::Base
   before do
     content_type 'application/json'
   end
+
+  use Libraries
 
   get '/' do
     # TODO: Replace me
