@@ -47,16 +47,18 @@ RSpec.describe LibrariesFetcher do
   end
 
   describe '#call' do
-    let(:results) { described_class.call(using: [Fetch::Gitlab]) }
+    let(:results) { described_class.call(using: [described_class::Gitlab]) }
 
     before do
-      allow(Fetch::Gitlab).to receive(:latest_public_libraries)
+      allow(described_class::Gitlab).to receive(:latest_public_libraries)
 
       results
     end
 
     it 'executes listed fetchers' do
-      expect(Fetch::Gitlab).to have_received(:latest_public_libraries).with(lang: nil).once
+      expect(described_class::Gitlab).to have_received(:latest_public_libraries)
+                                         .with(lang: nil)
+                                         .once
     end
 
     it 'returns "results" object' do

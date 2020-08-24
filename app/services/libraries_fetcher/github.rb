@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Fetch
+class LibrariesFetcher
   class Github
     module Queries
       def self.latest_public_libraries(limit:, order:, lang: nil)

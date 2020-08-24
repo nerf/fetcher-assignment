@@ -1,4 +1,4 @@
-RSpec.describe Fetch::Gitlab do
+RSpec.describe LibrariesFetcher::Gitlab do
   describe '.list_public_libraries' do
     context 'with results' do
       let(:project_name) { 'k8s' }

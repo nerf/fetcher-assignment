@@ -29,7 +29,7 @@ RSpec.describe Libraries do
       before do
         stub_request(:get, gitlab_url)
           .to_return(status: 200, body: gitlab_results)
-        stub_request(:post, Fetch::Github::API_ENDPOINT)
+        stub_request(:post, LibrariesFetcher::Github::API_ENDPOINT)
           .to_return(status: 200, body: github_result)
 
         get '/libraries', language: 'ruby'

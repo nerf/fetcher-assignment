@@ -11,7 +11,10 @@ class Libraries < Sinatra::Base
     lang = params[:language]
 
     results = LibrariesFetcher
-              .call(using: [Fetch::Gitlab, Fetch::Github], lang: lang)
+              .call(
+                using: [LibrariesFetcher::Gitlab, LibrariesFetcher::Github],
+                lang: lang
+              )
               .sort_by(:updated_at)
               .as_json(only: %i[url username name description source])
 

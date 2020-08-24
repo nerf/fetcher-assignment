@@ -1,4 +1,4 @@
-RSpec.describe Fetch::Github do
+RSpec.describe LibrariesFetcher::Github do
   describe '.latest_public_libraries' do
     context 'with results' do
       let(:project_name) { 'k8s' }
@@ -30,9 +30,9 @@ RSpec.describe Fetch::Github do
         }
       end
       let(:query) do
-        Fetch::Github::Queries.latest_public_libraries(
-          limit: Fetch::Github::DEFAULT_LIMIT,
-          order: Fetch::Github::DEFAULT_ORDER,
+        described_class::Queries.latest_public_libraries(
+          limit: described_class::DEFAULT_LIMIT,
+          order: described_class::DEFAULT_ORDER,
           lang: lang
         )
       end

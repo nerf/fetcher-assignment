@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Fetch
+class LibrariesFetcher
   class Gitlab
     API_ENDPOINT = 'https://gitlab.com/api/v4'
     DEFAULT_LIMIT = 50
