@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 require 'sinatra/reloader'
 
@@ -15,7 +17,10 @@ class Application < Sinatra::Base
   use Libraries
 
   get '/' do
-    # TODO: Replace me
-    { message: 'show api info' }.to_json
+    {
+      resources: {
+        libraries: '/libraries'
+      }
+    }.to_json
   end
 end

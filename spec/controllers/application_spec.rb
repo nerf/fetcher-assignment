@@ -4,8 +4,7 @@ RSpec.describe Application do
       get '/'
 
       expect(last_response).to be_ok
-      # TODO: Replace me
-      expect(resp_obj['message']).to match(/info/)
+      expect(resp_obj['resources']).not_to be_empty
     end
   end
 end
