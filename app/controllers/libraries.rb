@@ -5,6 +5,7 @@ class Libraries < Sinatra::Base
 
   before do
     cache_control :public, max_age: CACHE_MAX_AGE
+    content_type 'application/json'
   end
 
   get '/libraries' do
@@ -20,6 +21,6 @@ class Libraries < Sinatra::Base
 
     { data: results }.to_json
   rescue Lib::API::Client::RequestError => e
-    { error: true, message: e.message }.to_json
+    halt 503, { error: true, message: e.message }.to_json
   end
 end

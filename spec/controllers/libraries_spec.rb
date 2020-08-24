@@ -42,6 +42,7 @@ RSpec.describe Libraries do
           'source' => 'gitlab'
         }
 
+        expect(last_response).to be_ok
         expect(resp_obj['data'].length).to eq(1)
         expect(resp_obj['data'].first).to match(expected_result)
       end
@@ -55,6 +56,7 @@ RSpec.describe Libraries do
       end
 
       it 'returns error message' do
+        expect(last_response).to be_server_error
         expect(resp_obj['error']).to be_truthy
         expect(resp_obj['message']).to match(/timed out/i)
       end
@@ -68,6 +70,7 @@ RSpec.describe Libraries do
       end
 
       it 'returns error message' do
+        expect(last_response).to be_server_error
         expect(resp_obj['error']).to be_truthy
         expect(resp_obj['message']).to match(/invalid data/i)
       end
