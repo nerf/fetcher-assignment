@@ -2,6 +2,6 @@ require 'json'
 
 module ResponseAsObject
   def resp_obj
-    JSON.parse(last_response.body)
+    @response_as_object ||= JSON.parse(last_response.body)
   end
 end
