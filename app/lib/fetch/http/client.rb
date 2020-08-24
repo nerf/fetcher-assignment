@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 module Fetch
@@ -11,8 +13,8 @@ module Fetch
         @uri = URI(uri)
       end
 
-      def get(query = nil)
-        set_query_params(query)
+      def get(params = nil)
+        uri.query = encode_query_params(params)
         request = ::Net::HTTP::Get.new(uri.request_uri)
         request['Accept'] = 'application/json'
 
@@ -48,10 +50,10 @@ module Fetch
         client
       end
 
-      def set_query_params(params)
+      def encode_query_params(params)
         return unless params
 
-        uri.query = URI.encode_www_form(params.compact)
+        URI.encode_www_form(params.compact)
       end
 
       def parse_response!(response)

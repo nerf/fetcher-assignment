@@ -4,9 +4,9 @@ module Fetch
   class Github
     module Queries
       def self.latest_public_libraries(limit:, order:, lang: nil)
-        <<-EOQ
+        <<-END_OF_QUERY
           {
-            search(query: "is:public sort:#{order} language:#{lang.to_s}", type: REPOSITORY, last: #{limit}) {
+            search(query: "is:public sort:#{order} language:#{lang}", type: REPOSITORY, last: #{limit}) {
               edges {
                 node {
                   ... on Repository {
@@ -22,7 +22,7 @@ module Fetch
               }
             }
           }
-        EOQ
+        END_OF_QUERY
       end
     end
 
@@ -36,23 +36,26 @@ module Fetch
           limit: DEFAULT_LIMIT, order: DEFAULT_ORDER, lang: lang
         )
 
-        data = fetch(query).dig('data', 'search', 'edges')
-        data.map do |node|
-          Library.new(
-            username: node.dig('node', 'owner', 'login'),
-            name: node.dig('node', 'name'),
-            description: node.dig('node', 'description'),
-            url: node.dig('node', 'url'),
-            updated_at: DateTime.parse(node.dig('node', 'updatedAt')),
-            source: 'github'
-          )
-        end
+        fetch(query)
+          .dig('data', 'search', 'edges')
+          .map { |node| build_from_node(node) }
       end
 
       def fetch(query)
         ::Fetch::HTTP::Client.new(API_ENDPOINT).post(query: query) do |request|
           request['Authorization'] = "bearer #{ENV['GITHUB_OAUTH_TOKEN']}"
         end
+      end
+
+      def build_from_node(node)
+        Library.new(
+          username: node.dig('node', 'owner', 'login'),
+          name: node.dig('node', 'name'),
+          description: node.dig('node', 'description'),
+          url: node.dig('node', 'url'),
+          updated_at: DateTime.parse(node.dig('node', 'updatedAt')),
+          source: 'github'
+        )
       end
     end
   end

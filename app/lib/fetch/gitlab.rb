@@ -12,22 +12,25 @@ module Fetch
         args[:order_by] = DEFAULT_ORDER
         args[:with_programming_language] = args.delete(:lang)
 
-        fetch('/projects', args).map do |library|
-          Library.new(
-            username: namespace_from_path(library['path_with_namespace']),
-            name: library['name'],
-            description: library['description'],
-            url: library['web_url'],
-            updated_at: DateTime.parse(library['last_activity_at']),
-            source: 'gitlab'
-          )
-        end
+        fetch('/projects', args)
+          .map { |node| build_from_node(node) }
       end
 
       def fetch(path, args)
         uri = API_ENDPOINT + path
 
         ::Fetch::HTTP::Client.new(uri).get(args)
+      end
+
+      def build_from_node(node)
+        Library.new(
+          username: namespace_from_path(node['path_with_namespace']),
+          name: node['name'],
+          description: node['description'],
+          url: node['web_url'],
+          updated_at: DateTime.parse(node['last_activity_at']),
+          source: 'gitlab'
+        )
       end
 
       def namespace_from_path(path_with_namespace)

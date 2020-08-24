@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LibrariesFetcher
   class Results
     attr_reader :results
@@ -23,7 +25,6 @@ class LibrariesFetcher
     def as_json(args = {})
       results.map { |r| r.as_json(args) }
     end
-
   end
 
   def self.call(using: [], lang: nil)

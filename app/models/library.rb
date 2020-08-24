@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Library < Struct.new(:url, :username, :name, :description, :source, :updated_at, keyword_init: true)
   def as_json(only: nil)
     if only
