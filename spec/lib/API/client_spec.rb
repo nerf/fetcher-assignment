@@ -1,7 +1,7 @@
-RSpec.describe Fetch::HTTP::Client do
+RSpec.describe Lib::API::Client do
   let(:uri) { 'https://example.com/api' }
 
-  subject { Fetch::HTTP::Client.new(uri) }
+  subject { described_class.new(uri) }
 
   describe '#get' do
     context 'successful response' do
@@ -33,7 +33,7 @@ RSpec.describe Fetch::HTTP::Client do
 
         expect do
           subject.get()
-        end.to raise_error(Fetch::HTTP::Client::RequestError)
+        end.to raise_error(described_class::RequestError)
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Fetch::HTTP::Client do
 
         expect do
           subject.get
-        end.to raise_error(Fetch::HTTP::Client::RequestError)
+        end.to raise_error(described_class::RequestError)
       end
     end
 
@@ -53,7 +53,7 @@ RSpec.describe Fetch::HTTP::Client do
 
         expect do
           subject.get
-        end.to raise_error(Fetch::HTTP::Client::RequestError)
+        end.to raise_error(described_class::RequestError)
       end
     end
   end
@@ -90,7 +90,7 @@ RSpec.describe Fetch::HTTP::Client do
 
         expect do
           subject.post
-        end.to raise_error(Fetch::HTTP::Client::RequestError)
+        end.to raise_error(described_class::RequestError)
       end
     end
   end

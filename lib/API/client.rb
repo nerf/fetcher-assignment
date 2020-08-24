@@ -2,8 +2,8 @@
 
 require 'net/http'
 
-module Fetch
-  module HTTP
+module Lib
+  module API
     class Client
       class RequestError < StandardError; end
 

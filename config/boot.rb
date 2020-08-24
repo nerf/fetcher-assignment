@@ -8,6 +8,8 @@ Bundler.require(env.to_sym)
 require 'dalli'
 require 'rack-cache'
 
-Dir['./app/{lib,models,services}/**/*.rb'].each { |file| require file }
+Dir['./lib/**/*.rb', './app/{models,services}/**/*.rb'].each do |file|
+  require file
+end
 
 require './app/controllers/application'

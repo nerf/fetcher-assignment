@@ -34,7 +34,7 @@ RSpec.describe LibrariesFetcher::Gitlab do
         client = double('Client')
 
         allow(client).to receive(:get).with(query_args).and_return(parsed_response)
-        allow(Fetch::HTTP::Client).to receive(:new).with(api_endpoint).and_return(client)
+        allow(Lib::API::Client).to receive(:new).with(api_endpoint).and_return(client)
       end
 
       it 'returns list of library instances' do

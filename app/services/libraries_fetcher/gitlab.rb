@@ -19,7 +19,7 @@ class LibrariesFetcher
       def fetch(path, args)
         uri = API_ENDPOINT + path
 
-        ::Fetch::HTTP::Client.new(uri).get(args)
+        ::Lib::API::Client.new(uri).get(args)
       end
 
       def build_from_node(node)

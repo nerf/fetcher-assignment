@@ -42,7 +42,7 @@ class LibrariesFetcher
       end
 
       def fetch(query)
-        ::Fetch::HTTP::Client.new(API_ENDPOINT).post(query: query) do |request|
+        ::Lib::API::Client.new(API_ENDPOINT).post(query: query) do |request|
           request['Authorization'] = "bearer #{ENV['GITHUB_OAUTH_TOKEN']}"
         end
       end

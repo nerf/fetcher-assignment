@@ -19,7 +19,7 @@ class Libraries < Sinatra::Base
               .as_json(only: %i[url username name description source])
 
     { data: results }.to_json
-  rescue Fetch::HTTP::Client::RequestError => e
+  rescue Lib::API::Client::RequestError => e
     { error: true, message: e.message }.to_json
   end
 end
